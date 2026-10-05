@@ -1,7 +1,7 @@
 # Projeto integrado segundo semestre 2026 - Data Science
+## **Grupo 11** - Luiza Pincitori, Gustavo Fileni.
 
 ## CONTEXTO - Pesquisa e análise de Hardware
-> **Grupo 11** - Luiza Pincitori, Gustavo Fileni.
 
 Nossa ideia inicial tem como o intuito de facilitar a pesquisa de hardware de usuários em quantidades massivas para análise, seja para o game development ou sizing de infraestrutura corporativa.
 
