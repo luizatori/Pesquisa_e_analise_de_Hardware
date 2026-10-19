@@ -21,24 +21,27 @@ A ausência de uma plataforma centralizada e automatizada de coleta e análise m
 ```text
 Pesquisa_e_analise_de_Hardware/
 ├── dados/
-│   ├── exemplo_dados.csv       # Amostra do dataset 
-│   └── gerador_hardware.csv    # Dataset completo gerado (ignorado pelo gitignore)
+│   ├── exemplo_dados.csv            # Amostra do dataset
+│   └── gerador_hardware.csv         # Dataset completo gerado (ignorado pelo gitignore)
 ├── Docs/
-│   ├── .gitkeep                
-│   ├── como_o_gerador_f...md    # Documentação de funcionamento do gerador
-│   └── pipeline.md              # Documentação da pipeline de dados
+│   ├── .gitkeep                 
+│   ├── como_o_gerador_funciona.md   # Documentação de funcionamento do gerador
+│   └── pipeline.md                  # Documentação da pipeline de dados
 ├── infraestrutura/
 │   ├── ansible/
-│   │   ├── inventory.ini        # Inventário de IPs para o Ansible
-│   │   └── playbook.yml         # Automação do ambiente e pacotes Python
-│   ├── cloud_init.cfg           # Configuração de usuários e chaves SSH
-│   ├── main.tf                  # Provisionamento da VM via OpenTofu
-│   └── variables.tf             # Variáveis do OpenTofu
+│   │   ├── ansible.cfg              # Configurações globais do Ansible
+│   │   ├── inventory.ini            # Inventário de IPs para o Ansible
+│   │   ├── playbook.yml             # Automação do ambiente da VM Gerador
+│   │   └── playbook_consumidor.yml  # Automação do ambiente da VM Consumidor R
+│   ├── cloud_init.cfg               # Configuração de usuários e chaves SSH
+│   ├── consumidor.tf                # Provisionamento da VM Consumidor via OpenTofu
+│   ├── main.tf                      # Provisionamento da VM Gerador via OpenTofu
+│   └── variables.tf                 # Variáveis do OpenTofu
 ├── simulador/
-│   ├── gerador_hardware.py      # Script em Python do gerador de hardware
-│   └── requirements.txt         # Dependências de execução (NumPy, Pandas)
-├── .gitignore                   # Arquivos ignorados pelo controle de versão
-└── README.md                    # Documentação principal do projeto
+│   ├── gerador_hardware.py          # Script em Python do gerador de hardware
+│   └── requirements.txt             # Dependências de execução (NumPy, Pandas)
+├── .gitignore                       # Arquivos ignorados pelo controle de versão
+└── README.md                        # Documentação principal do projeto
 ```
 
 ---
