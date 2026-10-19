@@ -44,26 +44,26 @@ Pesquisa_e_analise_de_Hardware/
 └── README.md                        # Documentação principal do projeto
 ```
 
----
+## Requisitos Previos
 
-##  Requisitos Prévios
-
-Para reproduzir a automação da infraestrutura e a execução do simulador de dados:
+Para reproduzir a automacao da infraestrutura, a geracao dos dados e a etapa de consumo em R:
 
 - **Sistema Operacional:** Linux (Ubuntu 22.04 LTS ou superior) com suporte a KVM/libvirt.
-- **Infraestrutura como Código (IaC):**
-  - **OpenTofu** (`>= 1.6.0`) – Provisionamento declarativo da máquina virtual.
-  - **Ansible** (`>= 2.10`) – Automação e preparação do ambiente de execução.
-- **Conectividade & Segurança:** OpenSSH Client com chave SSH pública configurada em `~/.ssh/id_rsa.pub` (mapeada no `cloud_init.cfg`).
-- **Linguagem & Bibliotecas:** Python 3.10+ (instalado automaticamente na VM via playbook do Ansible).
+- **Infraestrutura como Codigo (IaC):**
+  - **OpenTofu** (`>= 1.6.0`) – Provisionamento declarativo das maquinas virtuais.
+  - **Ansible** (`>= 2.10`) – Automacao e preparacao dos ambientes.
+- **Conectividade & Seguranca:** OpenSSH Client com chave SSH publica configurada em `~/.ssh/id_rsa.pub` (mapeada no `cloud_init.cfg`).
+- **Linguagens & Ambientes:**
+  - Python 3.10+ (instalado automaticamente na VM geradora via Ansible).
+  - R (`>= 4.0`) com `tidyverse` e `data.table` (instalados na VM consumidor R).
 
 ---
 
-##  Passo a Passo para Reprodução e Implantação
+## Passo a Passo para Reproducao e Implantacao
 
-### 1. Provisionamento da Máquina Virtual (OpenTofu + cloud-init)
+### 1. Provisionamento das Maquinas Virtuais (OpenTofu + cloud-init)
 
-1. Acesse o diretório de infraestrutura:
+1. Acesse o diretorio de infraestrutura:
    ```bash
    cd infraestrutura
    ```
@@ -71,53 +71,60 @@ Para reproduzir a automação da infraestrutura e a execução do simulador de d
    ```bash
    tofu init
    ```
-3. Aplique o plano de execução para criar a VM:
+3. Aplique o plano de execucao para criar as VMs (gerador e consumidor):
    ```bash
    tofu apply -auto-approve
    ```
-4. Anote o **endereço IP** exibido na saída (`vm_ip`).
+4. Anote os **enderecos IP** exibidos na saida (`vm_ip` e `vm_consumidor_ip`).
 
 ---
 
-### 2. Configuração do Ambiente (Ansible)
+### 2. Configuracao do Ambiente (Ansible)
 
-1. Atualize o IP da VM no arquivo `infraestrutura/ansible/inventory.ini`:
+1. Atualize os IPs das VMs no arquivo `infraestrutura/ansible/inventory.ini`:
    ```ini
    [gerador]
-   vm_hardware ansible_host=<IP_DA_VM> ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa ansible_python_interpreter=/usr/bin/python3
+   vm_hardware ansible_host=<IP_DA_VM_GERADOR> ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa ansible_python_interpreter=/usr/bin/python3
+
+   [consumidor]
+   vm_consumidor_r ansible_host=<IP_DA_VM_CONSUMIDOR> ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa
    ```
-2. Execute o playbook do Ansible para preparar a VM:
+2. Execute os playbooks do Ansible para preparar os ambientes em ambas as VMs:
    ```bash
    ansible-playbook -i ansible/inventory.ini ansible/playbook.yml
+   ansible-playbook -i ansible/inventory.ini ansible/playbook_consumidor.yml
    ```
 
 ---
 
-### 3. Implantação da Aplicação via SSH / SCP
+### 3. Implantacao e Execucao do Simulador de Dados
 
-1. A partir da raiz do projeto na máquina hospedeira, transfira os arquivos do simulador para a VM:
+1. A partir da raiz do projeto na maquina hospedeira, transfira os arquivos do simulador para a VM Gerador:
    ```bash
-   scp -r simulador/* ubuntu@<IP_DA_VM>:/home/ubuntu/projeto_telemetria/simulador/
+   scp -r simulador/* ubuntu@<IP_DA_VM_GERADOR>:/home/ubuntu/projeto_telemetria/simulador/
    ```
-
----
-
-### 4. Execução do Simulador e Geração dos Dados
-
-1. Acesse a máquina virtual via SSH:
+2. Acesse a VM Gerador via SSH, ative o ambiente virtual e execute o script:
    ```bash
-   ssh ubuntu@<IP_DA_VM>
-   ```
-2. Ative o ambiente virtual criado pelo Ansible:
-   ```bash
+   ssh ubuntu@<IP_DA_VM_GERADOR>
    source /home/ubuntu/projeto_telemetria/venv/bin/activate
-   ```
-3. Execute o simulador dentro da VM:
-   ```bash
    python3 /home/ubuntu/projeto_telemetria/simulador/gerador_hardware.py
    ```
-4. Valide a geração e persistência do arquivo de dados:
+
+---
+
+### 4. Transferencia e Tratamento de Dados (Consumidor R)
+
+1. Transfira o dataset bruto gerado (`gerador_hardware.csv`) da VM Gerador para a sua maquina local e depois para a VM Consumidor R (ou diretamente via SCP entre as maquinas se houver rota):
    ```bash
-   head -n 5 /home/ubuntu/projeto_telemetria/dados/gerador_hardware.csv
-   wc -l /home/ubuntu/projeto_telemetria/dados/gerador_hardware.csv
+   scp ubuntu@<IP_DA_VM_GERADOR>:/home/ubuntu/projeto_telemetria/dados/gerador_hardware.csv ./gerador_hardware.csv
+   scp gerador_hardware.csv ubuntu@<IP_DA_VM_CONSUMIDOR>:/home/ubuntu/
    ```
+2. Acesse a VM Consumidor R via SSH:
+   ```bash
+   ssh ubuntu@<IP_DA_VM_CONSUMIDOR>
+   ```
+3. Execute o script em R para realizar a limpeza, remocao de duplicatas e tratamento dos 5 milhoes de registros:
+   ```bash
+   Rscript tratar_telemetria.R
+   ```
+4. Valide a criacao do arquivo tratado `dados_hardware_tratados.csv`, pronto para a etapa de Big Data no Google Colab.
