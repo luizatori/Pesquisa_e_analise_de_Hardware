@@ -81,10 +81,21 @@ Exemplo de dados necessários para armazenar as características de todo o estad
   * [x] SSH / SCP: Conexão segura estabelecida e implantação da aplicação realizada com sucesso na máquina virtual.   
 ---
 
-### 2. Consumo e Tratamento — VM "Consumidor R" [ ]
-* **Mecanismo:** Script em R, executado em uma segunda VM Linux, consome o `.csv` produzido pela etapa 1.
-* **Ações:** Limpar (remover *outliers* e leituras impossíveis), tratar e gerar um novo `.csv` já tratado como saída.
-* Este `.csv` tratado é o artefato de entrada para as próximas etapas de análise.
+### 2. Consumo e Tratamento — VM "Consumidor R" [x]
+- **Mecanismo:** Script em R (`tratar_telemetria.R`), executado de forma autônoma na segunda VM Linux (Ubuntu), consome o lote bruto `.csv` gerado pela etapa 1.
+
+- **Ações:** Carga de alta performance via `data.table` (`fread`), limpeza de inconsistências, eliminação de duplicatas e sanitização dos tipos de dados.
+
+- **Isolamento de Amostras:** Garantia de separação estrita do conjunto de dados, mantendo o arquivo `exemplo_dados.csv` exclusivamente na raiz do GitHub para análises prévias e documentação, sem interferência no fluxo de processamento de dados reais.
+
+- **Saída:** Base higienizada e consolidada exportada como `dados_hardware_tratados.csv`, que serve como artefato de entrada oficial para a etapa de Big Data e AED.
+
+- **Status:** Concluído.
+
+  * [x] **Infraestrutura e Dependências:** Resolução do ambiente de compilação C/C++ no SO da VM e instalação global do `r-cran-tidyverse` via gerenciador de pacotes `apt`.
+  * [x] **Transferência Segura (SCP):** Recebimento do arquivo bruto `gerador_hardware.csv` via SSH/SCP diretamente da máquina de geração para o diretório `/home/ubuntu/` na VM Consumidor R.
+  * [x] **Gestão de Memória (Swap):** Otimização da alocação de RAM e ativação de espaço de *swap* no Linux para evitar falhas do *Out-Of-Memory Killer* (OOM) durante o processamento do volume massivo.
+  * [x] **Higienização e Deduplicação:** Leitura de 5.000.000 de registros brutos e expurgo de 24.776 eventos duplicados ou corrompidos, resultando na gravação com sucesso de 4.975.224 registros válidos no arquivo final.
 
 ---
 
