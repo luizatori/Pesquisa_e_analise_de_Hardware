@@ -56,7 +56,7 @@ resource "libvirt_domain" "vm_gerador" {
   }
 }
 
-output "vm_ip" {
-  value       = libvirt_domain.vm_gerador.network_interface[0].addresses[0]
-  description = "Endereço IP atribuído à VM"
+output "vm_gerador_ip" {
+  value       = try(libvirt_domain.vm_gerador.network_interface[0].addresses[0], "VM desligada ou sem IP atribuído")
+  description = "Endereço IP atribuído à VM Gerador"
 }

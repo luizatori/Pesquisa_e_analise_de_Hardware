@@ -1,0 +1,40 @@
+---
+- hosts: consumidor_r
+  become: yes
+  tasks:
+    - name: Atualizar o cache do apt
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Instalar dependências básicas e repositório R oficial
+      apt:
+        name:
+          - software-properties-common
+          - dirmngr
+          - apt-transport-https
+          - ca-certificates
+          - gnupg2
+        state: present
+
+    - name: Adicionar chave GPG do repositório CRAN para o R
+      apt_key:
+        keyserver: keyserver.ubuntu.com
+        id: E298A3A825C0D65DFD57CBB651716619E084DAB9
+
+    - name: Adicionar repositório do R (CRAN)
+      apt_repository:
+        repo: "deb https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/"
+        state: present
+
+    - name: Instalar o R (r-base)
+      apt:
+        name: r-base
+        state: present
+        update_cache: yes
+
+    - name: Instalar pacotes de manipulação de dados no R (tidyverse, data.table)
+      shell: |
+        R -e "install.packages(c('tidyverse', 'data.table', 'lubridate'), repos='https://cloud.r-project.org/')"
+      args:
+        creates: /usr/local/lib/R/site-library/tidyverse
