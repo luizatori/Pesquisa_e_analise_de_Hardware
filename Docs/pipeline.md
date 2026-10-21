@@ -1,6 +1,6 @@
 # Projeto de Extensão BIG DATA — Grupo 11
 
-**Autores:** Luiza Pincitori, Gustavo Henrique Fileni  
+> **Grupo 11** - Luiza Pincitori, Gustavo Henrique Fileni  
 ---
 
 ## 1. Ideia Inicial — Pesquisa e Análise de Hardware
