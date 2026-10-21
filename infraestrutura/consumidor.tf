@@ -7,7 +7,7 @@ resource "libvirt_volume" "os_image_consumidor" {
   format = "qcow2"
 }
 
-# Recurso para redimensionar o disco automaticamente no host logo após a criação
+#recurso de redimensionamento
 resource "null_resource" "resize_disk_consumidor" {
   depends_on = [libvirt_volume.os_image_consumidor]
 
@@ -21,7 +21,6 @@ resource "libvirt_domain" "vm_consumidor" {
   memory = var.memory_mb
   vcpu   = var.vcpu
 
-  # Garante que a VM só inicia após o disco estar redimensionado no host
   depends_on = [null_resource.resize_disk_consumidor]
 
   cloudinit = libvirt_cloudinit_disk.commoninit.id
