@@ -27,6 +27,7 @@ Pesquisa_e_analise_de_Hardware/
 │   ├── .gitkeep                 
 │   ├── como_o_gerador_funciona.md   # Documentação de funcionamento do gerador
 │   └── pipeline.md                  # Documentação da pipeline de dados
+|   └── Big Data - Pesquisa e Análise de Hardware.ipynb  # Arquivo de Big Dada com todas as análises
 ├── infraestrutura/
 │   ├── ansible/
 │   │   ├── ansible.cfg              # Configurações globais do Ansible
