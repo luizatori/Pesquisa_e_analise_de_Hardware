@@ -99,14 +99,17 @@ Exemplo de dados necessários para armazenar as características de todo o estad
 
 ---
 
-### 3. Big Data e Análise Exploratória de Dados (AED)— Google Colab [ ]
+### 3. Big Data e Análise Exploratória de Dados (AED)— Google Colab [x]
 * **Mecanismo:** Leitura e processamento do arquivo `.csv` higienizado no ambiente **Google Colab**, utilizando Python e suas bibliotecas ecossistêmicas de análise de dados (`Pandas`, `NumPy`, `Matplotlib` e `Seaborn`).
 * **Ações de Análise e Modelagem:**
-  * **Análise Exploratória de Dados (AED):** Cálculo de estatísticas descritivas (média, mediana, desvio padrão, percentis e quartis e etc.)]
-  * **Data Warehouse e consultas OLAP:** Uso de modelo estrela e métricas OLAP para a análise.
-  * **Machine Learning & Data Mining:** Classificação do perfil do computador e divisão de testes.
-  * **Processamento Distribuído (PySpark):** Leitura em escala, filtros, agrupamentos e consultas via Spark SQL.
 
+- **Status:** Concluído.
+  
+  * [x] **Análise Exploratória de Dados (AED):** Cálculo de estatísticas descritivas (média, mediana, desvio padrão, percentis e quartis e etc.)]
+  * [x] **Data Warehouse e consultas OLAP:** Uso de modelo estrela e métricas OLAP para a análise.
+  * [x] **Machine Learning & Data Mining:** Classificação do perfil do computador e divisão de testes.
+  * [x] **Processamento Distribuído (PySpark):** Leitura em escala, filtros, agrupamentos e consultas via Spark SQL.
+ 
 ---
 
 ### 4. Disponibilização & Dashboard *(Fase futura)* [ ]
