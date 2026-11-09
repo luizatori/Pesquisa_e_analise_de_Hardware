@@ -1,9 +1,9 @@
-# Projeto de Extensão BIG DATA — Grupo 11
+# Projeto de Extensão: **Pesquisa e Análise de Hardware** — Grupo 11
 
 > **Grupo 11** - Luiza Pincitori, Gustavo Henrique Fileni  
 ---
 
-## 1. Ideia Inicial — Pesquisa e Análise de Hardware
+## 1. Ideia
 
 Nossa ideia inicial tem como intuito facilitar a pesquisa de hardware de usuários em quantidades massivas para análise, seja para o *game development* ou *sizing* de infraestrutura corporativa.
 
