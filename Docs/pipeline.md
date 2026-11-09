@@ -1,10 +1,7 @@
-# Projeto de Extensão: **Pesquisa e Análise de Hardware** — Grupo 11
-
+# Projeto Integrado - Data Science: **Pesquisa e Análise de Hardware** — Grupo 11
 > **Grupo 11** - Luiza Pincitori, Gustavo Henrique Fileni  
 ---
-
 ## 1. Ideia
-
 Nossa ideia inicial tem como intuito facilitar a pesquisa de hardware de usuários em quantidades massivas para análise, seja para o *game development* ou *sizing* de infraestrutura corporativa.
 
 A ideia consiste em usar todos os conceitos desse módulo (**Big Data**, **Probabilidade e Estatística**, **DevOps** e **Análise Exploratória de Dados**) para gerar e armazenar esses dados de maneira consistente e uniforme, além de apresentar um dashboard personalizado via HTML e JS.
